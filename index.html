@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kret - Portfolio Full Stack Developer</title>
+    <title>Kret - Portfolio Viacode</title>
     
     <!-- Tailwind CSS (Style) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -29,6 +29,10 @@
                             500: '#3b82f6',
                             600: '#2563eb',
                             900: '#1e3a8a',
+                        },
+                        discord: {
+                            500: '#5865F2',
+                            600: '#4752C4'
                         }
                     }
                 }
@@ -37,25 +41,6 @@
     </script>
 
     <style>
-        /* Płynne przewijanie */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Animacje wejścia */
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         /* Styl paska przewijania */
         ::-webkit-scrollbar {
             width: 10px;
@@ -69,6 +54,20 @@
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
+        }
+
+        /* Animacje wejścia */
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Styl dla kodu */
@@ -85,23 +84,24 @@
         .code-func { color: #dcdcaa; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans selection:bg-brand-200">
+<body class="bg-slate-50 text-slate-800 font-sans selection:bg-brand-200 min-h-screen flex flex-col">
 
     <!-- Nawigacja -->
-    <nav class="fixed w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all duration-300">
+    <nav class="fixed w-full bg-white/95 backdrop-blur-md shadow-sm z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <i class="fa-solid fa-code text-brand-600 text-2xl"></i>
-                    <span class="font-bold text-xl tracking-tight text-slate-900">Via<span class="text-brand-600">Code</span></span>
+                <!-- Logo Viacode -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="showPage('start')">
+                    <i class="fa-solid fa-layer-group text-brand-600 text-2xl"></i>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">Via<span class="text-brand-600">code</span></span>
                 </div>
                 
                 <!-- Menu Desktop -->
                 <div class="hidden md:flex space-x-8">
-                    <a href="#start" class="text-slate-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Start</a>
-                    <a href="#o-mnie" class="text-slate-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">O mnie</a>
-                    <a href="#projekty" class="text-slate-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Projekty</a>
-                    <a href="#kontakt" class="bg-brand-600 text-white hover:bg-brand-700 px-4 py-2 rounded-full text-sm font-medium transition-all shadow-lg shadow-brand-500/30">Kontakt</a>
+                    <button onclick="showPage('start')" class="nav-link text-brand-600 font-bold px-3 py-2 rounded-md text-sm transition-colors">Start</button>
+                    <button onclick="showPage('o-mnie')" class="nav-link text-slate-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">O mnie</button>
+                    <button onclick="showPage('projekty')" class="nav-link text-slate-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Projekty</button>
+                    <button onclick="showPage('kontakt')" class="bg-brand-600 text-white hover:bg-brand-700 px-4 py-2 rounded-full text-sm font-medium transition-all shadow-lg shadow-brand-500/30">Kontakt</button>
                 </div>
 
                 <!-- Przycisk Menu Mobilnego -->
@@ -114,219 +114,414 @@
         </div>
         
         <!-- Menu Mobilne -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 absolute w-full">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 shadow-lg">
-                <a href="#start" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-brand-50">Start</a>
-                <a href="#o-mnie" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-brand-50">O mnie</a>
-                <a href="#projekty" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-brand-50">Projekty</a>
-                <a href="#kontakt" class="block px-3 py-2 rounded-md text-base font-medium text-brand-600 font-bold bg-brand-50">Kontakt</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 absolute w-full shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <button onclick="showPage('start'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-brand-50">Start</button>
+                <button onclick="showPage('o-mnie'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-brand-50">O mnie</button>
+                <button onclick="showPage('projekty'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-brand-50">Projekty</button>
+                <button onclick="showPage('kontakt'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-brand-600 font-bold bg-brand-50">Kontakt</button>
             </div>
         </div>
     </nav>
 
-    <!-- Sekcja Hero (Start) -->
-    <section id="start" class="pt-32 pb-20 md:pt-40 md:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div class="text-center fade-in-up" style="animation-delay: 0.1s;">
-            <span class="bg-brand-100 text-brand-600 text-sm font-semibold px-4 py-1 rounded-full mb-4 inline-block">Dostępny do współpracy</span>
-            <h1 class="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight mb-6">
-                Cześć, jestem Kret. <br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-purple-600">Buduję rzeczy w sieci.</span>
-            </h1>
-            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-500 mb-10">
-                Jestem programistą z pasją do tworzenia interaktywnych doświadczeń webowych. 
-                Programuję gry, aplikacje użytkowe i rozwiązania backendowe.
-            </p>
-            <div class="flex justify-center gap-4">
-                <a href="#projekty" class="px-8 py-3 rounded-full bg-brand-600 text-white font-semibold hover:bg-brand-700 transition-all shadow-lg shadow-brand-500/30 flex items-center gap-2">
-                    <i class="fa-solid fa-folder-open"></i> Zobacz Projekty
-                </a>
-                <a href="https://github.com/kret-ai" target="_blank" class="px-8 py-3 rounded-full bg-white text-slate-700 border border-slate-200 font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center gap-2">
-                    <i class="fa-brands fa-github"></i> GitHub
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sekcja O Mnie & Umiejętności -->
-    <section id="o-mnie" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-slate-900">Moje Umiejętności</h2>
-                <p class="mt-4 text-slate-500">Technologie, z którymi pracuję na co dzień</p>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <!-- Skill 1 -->
-                <div class="p-6 rounded-2xl bg-slate-50 hover:shadow-lg transition-all hover:-translate-y-1 group">
-                    <i class="fa-brands fa-js text-4xl text-yellow-400 mb-4 group-hover:scale-110 transition-transform"></i>
-                    <h3 class="font-bold text-lg">JavaScript</h3>
-                    <p class="text-sm text-slate-400 mt-2">Gry, Strony internetowe</p>
-                </div>
-                <!-- Skill 2 -->
-                <div class="p-6 rounded-2xl bg-slate-50 hover:shadow-lg transition-all hover:-translate-y-1 group">
-                    <i class="fa-brands fa-python text-4xl text-blue-500 mb-4 group-hover:scale-110 transition-transform"></i>
-                    <h3 class="font-bold text-lg">Python</h3>
-                    <p class="text-sm text-slate-400 mt-2">Gry, Skrypty, Boty Discord</p>
-                </div>
-                <!-- Skill 3 -->
-                <div class="p-6 rounded-2xl bg-slate-50 hover:shadow-lg transition-all hover:-translate-y-1 group">
-                    <i class="fa-brands fa-html5 text-4xl text-orange-500 mb-4 group-hover:scale-110 transition-transform"></i>
-                    <h3 class="font-bold text-lg">HTML & CSS</h3>
-                    <p class="text-sm text-slate-400 mt-2">Tailwind, Responsive</p>
-                </div>
-                <!-- Skill 4 -->
-                <div class="p-6 rounded-2xl bg-slate-50 hover:shadow-lg transition-all hover:-translate-y-1 group">
-                    <i class="fa-solid fa-database text-4xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
-                    <h3 class="font-bold text-lg">Bazy Danych</h3>
-                    <p class="text-sm text-slate-400 mt-2">SQL, Firebase</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sekcja Projekty (GŁÓWNA CZĘŚĆ) -->
-    <section id="projekty" class="py-20 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
-                <div>
-                    <h2 class="text-3xl font-bold text-slate-900">Wybrane Projekty</h2>
-                    <p class="mt-2 text-slate-500">Kliknij, aby wejść w interakcję.</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
-                <!-- Projekt 1: GRA (Playable) -->
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-slate-100 flex flex-col h-full">
-                    <div class="h-48 bg-slate-800 flex items-center justify-center relative group">
-                        <i class="fa-solid fa-gamepad text-6xl text-slate-600 group-hover:text-brand-400 transition-colors"></i>
-                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                            <span class="text-white font-bold border-2 border-white px-4 py-2 rounded-full">Zagraj teraz</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded">GRA JS</span>
-                            <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock"></i> 2025</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Refleks Mistrza</h3>
-                        <p class="text-slate-600 text-sm mb-4 flex-1">
-                            Prosta gra zręcznościowa napisana w czystym JavaScript. Sprawdź swój czas reakcji klikając w pojawiające się cele.
-                        </p>
-                        <button onclick="openGameModal()" class="w-full mt-auto bg-slate-900 text-white py-3 rounded-xl hover:bg-slate-700 transition-colors font-medium flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-play"></i> Zagraj w przeglądarce
+    <!-- Kontener na "podstrony" -->
+    <main class="flex-grow pt-16">
+        
+        <!-- ================= STRONA: START ================= -->
+        <section id="page-start" class="page-section">
+            
+            <!-- Hero Section -->
+            <div class="min-h-[90vh] flex items-center justify-center px-4 bg-gradient-to-b from-white to-slate-50">
+                <div class="text-center fade-in-up max-w-4xl">
+                    <span class="bg-brand-100 text-brand-600 text-sm font-semibold px-4 py-1 rounded-full mb-6 inline-block tracking-wide">VIACODE DEVELOPMENT</span>
+                    <h1 class="text-5xl md:text-7xl font-bold text-slate-900 tracking-tight mb-8 leading-tight">
+                        Cześć, tu Kret. <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-purple-600">Tworzę przyszłość w kodzie.</span>
+                    </h1>
+                    <p class="mt-4 max-w-2xl mx-auto text-xl md:text-2xl text-slate-500 mb-12 leading-relaxed">
+                        Programista Full Stack, twórca gier i pasjonat nowych technologii.
+                        Zmieńmy Twój pomysł w działającą rzeczywistość.
+                    </p>
+                    <div class="flex justify-center gap-4 flex-wrap">
+                        <button onclick="showPage('projekty')" class="px-8 py-4 rounded-full bg-brand-600 text-white font-semibold hover:bg-brand-700 transition-all shadow-xl shadow-brand-500/30 flex items-center gap-2 transform hover:scale-105">
+                            <i class="fa-solid fa-folder-open"></i> Zobacz Projekty
                         </button>
+                        <a href="https://discord.gg/twojserwer" target="_blank" class="px-8 py-4 rounded-full bg-[#5865F2] text-white font-semibold hover:bg-[#4752C4] transition-all flex items-center gap-2 shadow-xl shadow-indigo-500/30 transform hover:scale-105">
+                            <i class="fa-brands fa-discord"></i> Dołącz do Discorda
+                        </a>
                     </div>
                 </div>
+            </div>
 
-                <!-- Projekt 2: POBIERANIE (Downloadable) -->
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-slate-100 flex flex-col h-full">
-                    <div class="h-48 bg-slate-100 flex items-center justify-center relative group">
-                        <i class="fa-solid fa-file-arrow-down text-6xl text-slate-300 group-hover:text-green-500 transition-colors"></i>
+            <!-- Dlaczego Viacode -->
+            <div class="py-24 bg-white px-4">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl font-bold text-slate-900">Dlaczego warto?</h2>
+                        <p class="text-slate-500 mt-2">Nie piszę tylko kodu. Dostarczam rozwiązania.</p>
                     </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded">NARZĘDZIE</span>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        <div class="text-center p-8 rounded-2xl bg-slate-50 hover:bg-white border border-transparent hover:border-slate-100 hover:shadow-2xl transition-all">
+                            <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6 text-brand-600 text-2xl">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">Szybkość działania</h3>
+                            <p class="text-slate-600">Optymalizacja to moje drugie imię. Twoje strony i gry będą działać błyskawicznie.</p>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">Generator Raportów</h3>
-                        <p class="text-slate-600 text-sm mb-4 flex-1">
-                            Skrypt automatyzujący tworzenie raportów .txt. Kliknij poniżej, aby pobrać przykładowy plik wygenerowany w locie przez JavaScript.
-                        </p>
-                        <button onclick="downloadProject()" class="w-full mt-auto border-2 border-slate-200 text-slate-700 py-3 rounded-xl hover:border-brand-600 hover:text-brand-600 transition-colors font-medium flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-download"></i> Pobierz demo
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Projekt 3: KOD (Code Reveal) -->
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-slate-100 flex flex-col h-full">
-                    <div class="h-48 bg-slate-900 flex items-center justify-center relative group">
-                        <span class="font-mono text-green-400 text-xl">&lt;Code /&gt;</span>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded">ALGORYTM</span>
+                        <div class="text-center p-8 rounded-2xl bg-slate-50 hover:bg-white border border-transparent hover:border-slate-100 hover:shadow-2xl transition-all">
+                            <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6 text-purple-600 text-2xl">
+                                <i class="fa-solid fa-paint-roller"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">Czysty Design</h3>
+                            <p class="text-slate-600">Używam nowoczesnych standardów UI/UX. Zero bałaganu, maksimum czytelności.</p>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">Algorytm Sortowania</h3>
-                        <p class="text-slate-600 text-sm mb-4 flex-1">
-                            Implementacja Bubble Sort w Pythonie. Kliknij, aby przeanalizować kod źródłowy bez opuszczania strony.
-                        </p>
-                        <button onclick="openCodeModal()" class="w-full mt-auto bg-brand-50 text-brand-700 py-3 rounded-xl hover:bg-brand-100 transition-colors font-medium flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-eye"></i> Zobacz kod
-                        </button>
+                        <div class="text-center p-8 rounded-2xl bg-slate-50 hover:bg-white border border-transparent hover:border-slate-100 hover:shadow-2xl transition-all">
+                            <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-6 text-green-600 text-2xl">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">Komunikacja</h3>
+                            <p class="text-slate-600">Jestem dostępny na Discordzie. Stały kontakt i raportowanie postępów prac.</p>
+                        </div>
                     </div>
                 </div>
-
             </div>
-        </div>
-    </section>
 
-    <!-- Sekcja Kontakt -->
-    <section id="kontakt" class="py-20 bg-white">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-slate-900 mb-6">Skontaktuj się ze mną</h2>
-            <p class="text-slate-500 mb-10">
-                Masz pomysł na projekt? A może po prostu chcesz pogadać o kodzie?
-                Napisz śmiało!
-            </p>
-            <div class="flex justify-center gap-6 mb-12">
-                <a href="mailto:projektviacode@gmail.com" class="flex flex-col items-center gap-2 group">
-                    <div class="w-16 h-16 bg-brand-50 rounded-full flex items-center justify-center group-hover:bg-brand-600 transition-colors">
-                        <i class="fa-solid fa-envelope text-brand-600 text-2xl group-hover:text-white transition-colors"></i>
+            <!-- Statystyki -->
+            <div class="py-20 bg-slate-900 text-white px-4">
+                <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-around text-center gap-10">
+                    <div>
+                        <div class="text-5xl font-bold text-brand-500 mb-2">3+</div>
+                        <div class="text-slate-400">Lata doświadczenia</div>
                     </div>
-                    <span class="text-sm font-medium text-slate-600">Email</span>
-                </a>
-                <a href="#" class="flex flex-col items-center gap-2 group">
-                    <div class="w-16 h-16 bg-brand-50 rounded-full flex items-center justify-center group-hover:bg-slate-900 transition-colors">
-                        <i class="fa-brands fa-github text-brand-600 text-2xl group-hover:text-white transition-colors"></i>
+                    <div>
+                        <div class="text-5xl font-bold text-purple-500 mb-2">50+</div>
+                        <div class="text-slate-400">Ukończonych projektów</div>
                     </div>
-                    <span class="text-sm font-medium text-slate-600">GitHub</span>
-                </a>
+                    <div>
+                        <div class="text-5xl font-bold text-green-500 mb-2">100%</div>
+                        <div class="text-slate-400">Zadowolonych klientów</div>
+                    </div>
+                </div>
             </div>
-            <div class="p-8 bg-slate-50 rounded-2xl border border-slate-100">
-                <p class="text-slate-400 text-sm">© 2025 Kret. Wszelkie prawa zastrzeżone.</p>
+            
+            <!-- Stopka Start -->
+            <div class="py-10 text-center text-slate-400 bg-slate-50">
+                <p>Przewiń w górę, aby zmienić zakładkę.</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- MODAL: GRA (Game Modal) -->
-    <div id="gameModal" class="fixed inset-0 bg-slate-900/90 hidden items-center justify-center z-[100] backdrop-blur-sm">
-        <div class="bg-white p-2 rounded-2xl shadow-2xl max-w-lg w-full mx-4 relative">
+        <!-- ================= STRONA: O MNIE ================= -->
+        <section id="page-o-mnie" class="page-section hidden">
+            
+            <!-- Header O Mnie -->
+            <div class="py-20 px-4 bg-white text-center">
+                <div class="max-w-4xl mx-auto fade-in-up">
+                    <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Poznajmy się bliżej</h2>
+                    <p class="text-xl text-slate-500 leading-relaxed">
+                        Nie jestem tylko liniami kodu w terminalu. Jestem twórcą, który rozumie potrzeby użytkownika.
+                        Moja przygoda z IT zaczęła się od pasji do gier wideo, a przerodziła się w karierę Full Stack Developera.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Skills Grid (Z poprzedniej wersji) -->
+            <div class="py-16 bg-slate-50 px-4">
+                <div class="max-w-7xl mx-auto">
+                    <h3 class="text-2xl font-bold text-center mb-12">Mój Arsenał</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        <div class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-xl transition-all group">
+                            <i class="fa-brands fa-js text-5xl text-yellow-400 mb-4 group-hover:scale-110 transition-transform block"></i>
+                            <h3 class="font-bold">JavaScript / TypeScript</h3>
+                        </div>
+                        <div class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-xl transition-all group">
+                            <i class="fa-brands fa-python text-5xl text-blue-500 mb-4 group-hover:scale-110 transition-transform block"></i>
+                            <h3 class="font-bold">Python / Django</h3>
+                        </div>
+                        <div class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-xl transition-all group">
+                            <i class="fa-brands fa-react text-5xl text-cyan-400 mb-4 group-hover:scale-110 transition-transform block"></i>
+                            <h3 class="font-bold">React & Tailwind</h3>
+                        </div>
+                        <div class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-xl transition-all group">
+                            <i class="fa-solid fa-server text-5xl text-green-500 mb-4 group-hover:scale-110 transition-transform block"></i>
+                            <h3 class="font-bold">Node.js & SQL</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Oś Czasu (Timeline) - NOWOŚĆ -->
+            <div class="py-20 bg-white px-4">
+                <div class="max-w-4xl mx-auto">
+                    <h3 class="text-3xl font-bold text-center mb-16">Moja Ścieżka Rozwoju</h3>
+                    <div class="space-y-12 relative border-l-4 border-slate-100 ml-4 md:ml-0">
+                        
+                        <!-- Event 1 -->
+                        <div class="relative pl-12 md:pl-0">
+                            <div class="md:w-1/2 md:pr-12 md:text-right">
+                                <span class="text-brand-600 font-bold text-sm tracking-wider uppercase">2020</span>
+                                <h4 class="text-xl font-bold mt-1">Początki Programowania</h4>
+                                <p class="text-slate-500 mt-2">Pierwsze linie kodu w Pythonie. Tworzenie prostych botów tekstowych i automatyzacja zadań domowych.</p>
+                            </div>
+                            <div class="absolute left-0 md:left-1/2 top-0 w-8 h-8 bg-brand-600 rounded-full border-4 border-white transform -translate-x-[18px] md:-translate-x-4"></div>
+                        </div>
+
+                        <!-- Event 2 -->
+                        <div class="relative pl-12 md:pl-0">
+                            <div class="md:w-1/2 md:ml-auto md:pl-12">
+                                <span class="text-purple-600 font-bold text-sm tracking-wider uppercase">2022</span>
+                                <h4 class="text-xl font-bold mt-1">Pierwsze Zlecenia</h4>
+                                <p class="text-slate-500 mt-2">Start marki Viacode. Realizacja stron wizytówek dla lokalnych firm i konfiguracja serwerów Discord.</p>
+                            </div>
+                            <div class="absolute left-0 md:left-1/2 top-0 w-8 h-8 bg-purple-600 rounded-full border-4 border-white transform -translate-x-[18px] md:-translate-x-4"></div>
+                        </div>
+
+                        <!-- Event 3 -->
+                        <div class="relative pl-12 md:pl-0">
+                            <div class="md:w-1/2 md:pr-12 md:text-right">
+                                <span class="text-green-600 font-bold text-sm tracking-wider uppercase">2025 - Obecnie</span>
+                                <h4 class="text-xl font-bold mt-1">Full Stack & Game Dev</h4>
+                                <p class="text-slate-500 mt-2">Zaawansowane aplikacje webowe, gry przeglądarkowe i kompleksowe systemy. Ciągły rozwój!</p>
+                            </div>
+                            <div class="absolute left-0 md:left-1/2 top-0 w-8 h-8 bg-green-600 rounded-full border-4 border-white transform -translate-x-[18px] md:-translate-x-4"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cytat -->
+            <div class="py-20 bg-slate-900 text-center px-4">
+                <blockquote class="text-2xl md:text-3xl font-serif italic text-slate-300 max-w-3xl mx-auto">
+                    "Kodowanie to nie tylko pisanie instrukcji dla komputera. To sztuka rozwiązywania problemów ludzi."
+                </blockquote>
+                <div class="mt-6 text-brand-500 font-bold">— Kret, Viacode</div>
+            </div>
+        </section>
+
+        <!-- ================= STRONA: PROJEKTY ================= -->
+        <section id="page-projekty" class="page-section hidden bg-slate-50">
+            
+            <!-- Header Projekty -->
+            <div class="py-20 px-4 text-center bg-white border-b border-slate-100">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Portfolio Realizacji</h2>
+                <p class="text-lg text-slate-500 max-w-2xl mx-auto">
+                    Poniżej znajdziesz wybrane projekty. Każdy z nich jest interaktywny - możesz zagrać, pobrać plik lub podejrzeć kod źródłowy.
+                </p>
+            </div>
+
+            <!-- Grid Projektów (Interaktywny) -->
+            <div class="py-20 px-4 max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Projekt 1 -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-slate-100 flex flex-col h-full group fade-in-up" style="animation-delay: 0.1s">
+                        <div class="h-60 bg-slate-800 flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 bg-brand-600 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                            <i class="fa-solid fa-gamepad text-8xl text-slate-600 group-hover:text-white transition-colors transform group-hover:scale-110 duration-500"></i>
+                        </div>
+                        <div class="p-8 flex-1 flex flex-col">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-full">GRA JS</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-3">Refleks Mistrza</h3>
+                            <p class="text-slate-600 mb-6 flex-1">
+                                W pełni grywalna gra zręcznościowa w przeglądarce. Testuje koordynację i szybkość reakcji gracza.
+                            </p>
+                            <button onclick="openGameModal()" class="w-full bg-slate-900 text-white py-4 rounded-xl hover:bg-slate-700 transition-colors font-bold flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-play"></i> Zagraj Teraz
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Projekt 2 -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-slate-100 flex flex-col h-full group fade-in-up" style="animation-delay: 0.2s">
+                        <div class="h-60 bg-slate-100 flex items-center justify-center relative overflow-hidden">
+                            <i class="fa-solid fa-file-code text-8xl text-slate-300 group-hover:text-brand-500 transition-colors transform group-hover:rotate-12 duration-500"></i>
+                        </div>
+                        <div class="p-8 flex-1 flex flex-col">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">NARZĘDZIE</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-3">Generator Raportów</h3>
+                            <p class="text-slate-600 mb-6 flex-1">
+                                System generowania dokumentów .txt po stronie klienta. Symulacja systemu backendowego w czystym JS.
+                            </p>
+                            <button onclick="downloadProject()" class="w-full border-2 border-slate-200 text-slate-700 py-4 rounded-xl hover:border-brand-600 hover:text-brand-600 transition-colors font-bold flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-download"></i> Pobierz Plik
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Projekt 3 -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-slate-100 flex flex-col h-full group fade-in-up" style="animation-delay: 0.3s">
+                        <div class="h-60 bg-slate-900 flex items-center justify-center relative overflow-hidden">
+                            <span class="font-mono text-green-400 text-3xl group-hover:text-brand-400 transition-colors">&lt;Code /&gt;</span>
+                        </div>
+                        <div class="p-8 flex-1 flex flex-col">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full">ALGORYTM</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-3">Algorytmika</h3>
+                            <p class="text-slate-600 mb-6 flex-1">
+                                Wizualizacja i implementacja Bubble Sort w Pythonie. Zobacz jak wygląda czysty i optymalny kod.
+                            </p>
+                            <button onclick="openCodeModal()" class="w-full bg-brand-50 text-brand-700 py-4 rounded-xl hover:bg-brand-100 transition-colors font-bold flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-eye"></i> Podgląd Kodu
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proces Pracy - NOWOŚĆ -->
+            <div class="py-20 bg-white px-4">
+                <div class="max-w-5xl mx-auto">
+                    <h3 class="text-3xl font-bold text-center mb-16">Jak pracuję nad projektem?</h3>
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                        <div class="text-center w-full">
+                            <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-slate-400 border-2 border-slate-200">1</div>
+                            <h4 class="font-bold text-lg">Analiza</h4>
+                            <p class="text-sm text-slate-500 mt-2">Rozmawiamy o Twoich potrzebach.</p>
+                        </div>
+                        <div class="hidden md:block h-1 w-24 bg-slate-100"></div>
+                        <div class="text-center w-full">
+                            <div class="w-20 h-20 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-brand-600 border-2 border-brand-200">2</div>
+                            <h4 class="font-bold text-lg">Kodowanie</h4>
+                            <p class="text-sm text-slate-500 mt-2">Piszę czysty i szybki kod.</p>
+                        </div>
+                        <div class="hidden md:block h-1 w-24 bg-slate-100"></div>
+                        <div class="text-center w-full">
+                            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-green-600 border-2 border-green-200">3</div>
+                            <h4 class="font-bold text-lg">Wdrożenie</h4>
+                            <p class="text-sm text-slate-500 mt-2">Publikacja i wsparcie techniczne.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Call to Action -->
+            <div class="py-16 bg-slate-900 text-center px-4">
+                <h3 class="text-2xl font-bold text-white mb-4">Masz pomysł na kolejny projekt?</h3>
+                <button onclick="showPage('kontakt')" class="px-8 py-3 bg-brand-600 text-white rounded-full font-bold hover:bg-brand-500 transition-colors">
+                    Napisz do mnie
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= STRONA: KONTAKT ================= -->
+        <section id="page-kontakt" class="page-section hidden">
+            
+            <div class="py-20 px-4 bg-gradient-to-b from-white to-slate-50 min-h-[60vh] flex flex-col justify-center">
+                <div class="max-w-3xl w-full mx-auto text-center fade-in-up">
+                    <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Dołącz do Viacode</h2>
+                    <p class="text-slate-500 mb-12 text-xl leading-relaxed">
+                        Chcesz pogadać, pograć lub zlecić projekt? <br>
+                        Najszybciej złapiesz mnie na Discordzie, ale maila też sprawdzam.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                        <!-- Email -->
+                        <a href="mailto:kret@viacode.pl" class="flex flex-col items-center gap-4 p-8 bg-white rounded-2xl border border-slate-100 hover:border-brand-200 hover:shadow-xl transition-all group transform hover:-translate-y-2">
+                            <div class="w-20 h-20 bg-brand-50 rounded-full flex items-center justify-center group-hover:bg-brand-600 transition-colors">
+                                <i class="fa-solid fa-envelope text-brand-600 text-3xl group-hover:text-white transition-colors"></i>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-lg text-slate-900">Email</span>
+                                <span class="text-sm text-slate-500">kret@viacode.pl</span>
+                            </div>
+                        </a>
+
+                        <!-- Discord (GŁÓWNY) -->
+                        <a href="https://discord.gg/twojserwer" target="_blank" class="flex flex-col items-center gap-4 p-8 bg-white rounded-2xl border border-discord-500/30 hover:border-discord-500 hover:shadow-2xl hover:shadow-discord-500/20 transition-all group relative overflow-hidden transform hover:-translate-y-2">
+                            <div class="absolute inset-0 bg-discord-50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <div class="w-20 h-20 bg-discord-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform z-10 shadow-lg">
+                                <i class="fa-brands fa-discord text-white text-4xl"></i>
+                            </div>
+                            <div class="z-10">
+                                <span class="block font-bold text-lg text-discord-600">Discord</span>
+                                <span class="text-sm text-slate-500">Kliknij, aby dołączyć</span>
+                            </div>
+                        </a>
+
+                        <!-- GitHub -->
+                        <a href="#" target="_blank" class="flex flex-col items-center gap-4 p-8 bg-white rounded-2xl border border-slate-100 hover:border-slate-300 hover:shadow-xl transition-all group transform hover:-translate-y-2">
+                            <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center group-hover:bg-slate-900 transition-colors">
+                                <i class="fa-brands fa-github text-slate-700 text-4xl group-hover:text-white transition-colors"></i>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-lg text-slate-900">GitHub</span>
+                                <span class="text-sm text-slate-500">Sprawdź moje repo</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section - NOWOŚĆ -->
+            <div class="py-20 bg-white px-4 border-t border-slate-100">
+                <div class="max-w-3xl mx-auto">
+                    <h3 class="text-3xl font-bold text-center mb-12">Często zadawane pytania (FAQ)</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="p-6 bg-slate-50 rounded-2xl">
+                            <h4 class="font-bold text-lg mb-2">Jak długo trwa realizacja projektu?</h4>
+                            <p class="text-slate-600">Proste strony wizytówki to kwestia 3-5 dni. Bardziej złożone aplikacje wyceniam indywidualnie po rozmowie na Discordzie.</p>
+                        </div>
+                        <div class="p-6 bg-slate-50 rounded-2xl">
+                            <h4 class="font-bold text-lg mb-2">Czy poprawiasz istniejący kod?</h4>
+                            <p class="text-slate-600">Tak! Jeśli masz stronę, która działa wolno lub potrzebuje odświeżenia, chętnie zrobię audyt i wprowadzę poprawki.</p>
+                        </div>
+                        <div class="p-6 bg-slate-50 rounded-2xl">
+                            <h4 class="font-bold text-lg mb-2">W czym piszesz gry?</h4>
+                            <p class="text-slate-600">Głównie w czystym JavaScript (Canvas API) lub używając bibliotek jak Phaser.js. Lubię optymalizację i lekkie rozwiązania.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Kontakt -->
+            <div class="py-12 bg-slate-900 text-center text-slate-400">
+                <div class="mb-4">
+                    <i class="fa-solid fa-layer-group text-brand-600 text-3xl"></i>
+                </div>
+                <p class="text-sm font-medium">© 2025 Viacode (Kret). Wszelkie prawa zastrzeżone.</p>
+                <p class="text-xs mt-2 text-slate-600">Made with 💙 and Keyboard</p>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- MODALE (Bez zmian w logice, tylko wygląd) -->
+    
+    <!-- MODAL: GRA -->
+    <div id="gameModal" class="fixed inset-0 bg-slate-900/90 hidden items-center justify-center z-[100] backdrop-blur-sm p-4">
+        <div class="bg-white p-2 rounded-2xl shadow-2xl max-w-lg w-full relative animate-scale-in">
             <button onclick="closeGameModal()" class="absolute -top-12 right-0 text-white hover:text-brand-400 text-lg font-bold flex items-center gap-2">
                 <i class="fa-solid fa-xmark"></i> Zamknij
             </button>
-            
             <div class="bg-slate-800 rounded-xl overflow-hidden relative" style="height: 400px;">
-                <!-- UI Gry -->
                 <div class="absolute top-4 left-4 text-white font-mono z-10 pointer-events-none">
                     Punkty: <span id="score" class="text-brand-400 font-bold">0</span>
                 </div>
-                <div id="startScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/80 z-20">
+                <div id="startScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 z-20">
                     <h3 class="text-white text-2xl font-bold mb-4">Refleks Mistrza</h3>
-                    <p class="text-slate-300 mb-6 text-sm text-center px-4">Klikaj w czerwone kropki zanim znikną!</p>
-                    <button onclick="startGame()" class="px-6 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-500 font-bold">START</button>
+                    <p class="text-slate-300 mb-6 text-sm text-center px-4">Złap czerwone kropki zanim znikną!</p>
+                    <button onclick="startGame()" class="px-8 py-3 bg-brand-600 text-white rounded-full hover:bg-brand-500 font-bold shadow-lg shadow-brand-500/50 transition-all hover:scale-105">START</button>
                 </div>
-                <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-red-900/90 z-20 hidden">
-                    <h3 class="text-white text-2xl font-bold mb-2">Koniec Gry!</h3>
-                    <p class="text-white mb-6">Twój wynik: <span id="finalScore">0</span></p>
-                    <button onclick="startGame()" class="px-6 py-2 bg-white text-red-900 rounded-lg hover:bg-slate-100 font-bold">Zagraj ponownie</button>
+                <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-red-900/95 z-20 hidden">
+                    <h3 class="text-white text-3xl font-bold mb-2">Koniec Gry!</h3>
+                    <p class="text-white mb-8 text-xl">Wynik: <span id="finalScore" class="font-bold text-yellow-400">0</span></p>
+                    <button onclick="startGame()" class="px-8 py-3 bg-white text-red-900 rounded-full hover:bg-slate-100 font-bold shadow-lg transition-all hover:scale-105">Jeszcze raz</button>
                 </div>
-                
-                <!-- Obszar gry -->
-                <div id="gameArea" class="w-full h-full relative cursor-crosshair" onclick="missClick(event)">
-                    <!-- Cele będą generowane tutaj przez JS -->
-                </div>
-            </div>
-            
-            <div class="p-4 text-center">
-                <p class="text-xs text-slate-500">Gra napisana w czystym JS bez zewnętrznych bibliotek.</p>
+                <div id="gameArea" class="w-full h-full relative cursor-crosshair" onclick="missClick(event)"></div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: KOD (Code Modal) -->
-    <div id="codeModal" class="fixed inset-0 bg-slate-900/90 hidden items-center justify-center z-[100] backdrop-blur-sm">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl max-w-2xl w-full mx-4 relative flex flex-col max-h-[80vh]">
+    <!-- MODAL: KOD -->
+    <div id="codeModal" class="fixed inset-0 bg-slate-900/90 hidden items-center justify-center z-[100] backdrop-blur-sm p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl max-w-2xl w-full relative flex flex-col max-h-[80vh] animate-scale-in">
             <div class="flex items-center justify-between p-4 border-b border-slate-700 bg-slate-800 rounded-t-2xl">
                 <div class="flex gap-2">
                     <div class="w-3 h-3 rounded-full bg-red-500"></div>
@@ -338,49 +533,92 @@
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
-            
             <div class="p-0 overflow-auto custom-scrollbar flex-1 bg-slate-900">
 <pre class="text-sm font-mono leading-relaxed m-0 rounded-none bg-slate-900">
-<span class="code-comment"># Implementacja sortowania bąbelkowego w Pythonie</span>
-<span class="code-comment"># Złożoność czasowa: O(n^2)</span>
+<span class="code-comment"># Autor: Kret (Viacode)</span>
+<span class="code-comment"># Implementacja sortowania bąbelkowego</span>
 
 <span class="code-func">def</span> <span class="code-func">bubble_sort</span>(arr):
     n = <span class="code-func">len</span>(arr)
     
-    <span class="code-comment"># Przejdź przez wszystkie elementy tablicy</span>
+    <span class="code-comment"># Pętla główna</span>
     <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-func">range</span>(n):
+        swapped = <span class="code-keyword">False</span>
         
-        <span class="code-comment"># Ostatnie i elementów jest już na swoim miejscu</span>
+        <span class="code-comment"># Pętla wewnętrzna</span>
         <span class="code-keyword">for</span> j <span class="code-keyword">in</span> <span class="code-func">range</span>(0, n-i-1):
             
-            <span class="code-comment"># Zamień, jeśli element jest większy od następnego</span>
+            <span class="code-comment"># Porównanie elementów</span>
             <span class="code-keyword">if</span> arr[j] > arr[j+1]:
                 arr[j], arr[j+1] = arr[j+1], arr[j]
+                swapped = <span class="code-keyword">True</span>
+        
+        <span class="code-comment"># Optymalizacja</span>
+        <span class="code-keyword">if</span> <span class="code-keyword">not</span> swapped:
+            <span class="code-keyword">break</span>
                 
     <span class="code-keyword">return</span> arr
 
-<span class="code-comment"># Przykładowe użycie</span>
 data = [64, 34, 25, 12, 22, 11, 90]
-sorted_data = bubble_sort(data)
-<span class="code-func">print</span>(<span class="code-string">"Posortowana tablica:"</span>, sorted_data)
+<span class="code-func">print</span>(<span class="code-string">f"Wynik: {bubble_sort(data)}"</span>)
 </pre>
-            </div>
-            
-            <div class="p-4 bg-slate-800 rounded-b-2xl border-t border-slate-700 text-right">
-                <button onclick="closeCodeModal()" class="px-4 py-2 bg-slate-700 text-white rounded hover:bg-slate-600 text-sm">Zamknij podgląd</button>
             </div>
         </div>
     </div>
 
-    <!-- SKRYPTY LOGIKI -->
+    <!-- SKRYPTY -->
     <script>
-        // --- 1. Menu Mobilne ---
+        // --- System Nawigacji "SPA" (Single Page Application) ---
+        function showPage(pageId) {
+            // 1. Ukryj wszystkie sekcje
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => {
+                page.classList.add('hidden');
+            });
+
+            // 2. Pokaż wybraną sekcję
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                
+                // Reset animacji (żeby wjechało od nowa)
+                const content = targetPage.querySelector('.fade-in-up');
+                if (content) {
+                    content.style.animation = 'none';
+                    content.offsetHeight; /* trigger reflow */
+                    content.style.animation = null; 
+                }
+            }
+
+            // 3. Aktualizuj aktywne menu
+            updateActiveMenu(pageId);
+
+            // 4. Przewiń na górę (WAŻNE przy długich stronach)
+            window.scrollTo(0, 0);
+        }
+
+        function updateActiveMenu(activeId) {
+            // Reset styli w menu desktopowym
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('text-brand-600', 'font-bold');
+                link.classList.add('text-slate-600');
+                
+                // Sprawdź czy ten przycisk prowadzi do aktywnej strony
+                if(link.getAttribute('onclick').includes(activeId)) {
+                    link.classList.add('text-brand-600', 'font-bold');
+                    link.classList.remove('text-slate-600');
+                }
+            });
+        }
+
+        // --- Reszta Logiki (Menu, Gry, Pobieranie) ---
+
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         }
 
-        // --- 2. Logika Gry (Mini-Game) ---
+        // LOGIKA GRY
         let score = 0;
         let gameActive = false;
         let gameInterval;
@@ -393,7 +631,7 @@ sorted_data = bubble_sort(data)
         function openGameModal() {
             document.getElementById('gameModal').classList.remove('hidden');
             document.getElementById('gameModal').classList.add('flex');
-            document.body.style.overflow = 'hidden'; // Zablokuj scrollowanie strony
+            document.body.style.overflow = 'hidden';
         }
 
         function closeGameModal() {
@@ -410,9 +648,7 @@ sorted_data = bubble_sort(data)
             gameActive = true;
             startScreen.classList.add('hidden');
             gameOverScreen.classList.add('hidden');
-            gameArea.innerHTML = ''; // Wyczyść
-            
-            // Spawnuj cel co 600-1000ms
+            gameArea.innerHTML = '';
             gameInterval = setInterval(spawnTarget, 800);
         }
 
@@ -435,9 +671,7 @@ sorted_data = bubble_sort(data)
 
         function spawnTarget() {
             if (!gameActive) return;
-
             const target = document.createElement('div');
-            // Losowa pozycja (z marginesem żeby nie wyszło poza ramkę)
             const x = Math.random() * (gameArea.clientWidth - 50);
             const y = Math.random() * (gameArea.clientHeight - 50);
             
@@ -446,27 +680,14 @@ sorted_data = bubble_sort(data)
             target.style.top = y + 'px';
             target.style.width = '40px';
             target.style.height = '40px';
-            target.style.backgroundColor = '#ef4444'; // Czerwony
+            target.style.backgroundColor = '#ef4444';
             target.style.borderRadius = '50%';
             target.style.cursor = 'pointer';
-            target.style.transition = 'transform 0.1s';
-            target.onmousedown = (e) => {
-                e.stopPropagation(); // Nie triggeruj missClick
-                hitTarget(target);
-            };
+            target.onmousedown = (e) => { e.stopPropagation(); hitTarget(target); };
 
-            // Animacja pojawiania się
-            target.animate([
-                { transform: 'scale(0)' },
-                { transform: 'scale(1)' }
-            ], {
-                duration: 200,
-                fill: 'forwards'
-            });
-
+            target.animate([{ transform: 'scale(0)' }, { transform: 'scale(1)' }], { duration: 200, fill: 'forwards' });
             gameArea.appendChild(target);
 
-            // Cel znika po 1.5 sekundy = przegrana
             setTimeout(() => {
                 if (target.parentNode && gameActive) {
                     target.remove();
@@ -480,70 +701,39 @@ sorted_data = bubble_sort(data)
             score++;
             scoreElement.innerText = score;
             element.remove();
-            
-            // Prosty efekt dźwiękowy (opcjonalnie)
-            // Przyśpiesz grę co 5 punktów
             if (score % 5 === 0) {
                 clearInterval(gameInterval);
                 gameInterval = setInterval(spawnTarget, Math.max(400, 800 - score * 20));
             }
         }
 
-        function missClick(event) {
-            if (!gameActive) return;
-            // Kliknięcie w tło = strata punktu (opcjonalne)
-            // Tutaj nic nie robimy, żeby nie frustrować gracza za bardzo
-        }
+        function missClick(event) { if (!gameActive) return; }
 
-
-        // --- 3. Logika Pobierania (Download Simulation) ---
+        // LOGIKA POBIERANIA
         function downloadProject() {
-            const filename = 'raport_finansowy_demo.txt';
-            const text = `
-RAPORT FINANSOWY - WERSJA DEMO
-Wygenerowano: ${new Date().toLocaleString()}
-Autor: Kret
-
-----------------------------------------
-To jest przykładowy plik wygenerowany dynamicznie 
-przez JavaScript w przeglądarce klienta.
-
-1. Przychody: 10 000 PLN
-2. Koszty: 4 500 PLN
-3. Zysk: 5 500 PLN
-
-Dziękuję za pobranie projektu!
-----------------------------------------
-            `;
-
+            const filename = 'raport_viacode.txt';
+            const text = `RAPORT VIACODE - WERSJA DEMO\nAutor: Kret\n\nDzięki za test! To plik wygenerowany w JS.`;
             const element = document.createElement('a');
             element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
             element.setAttribute('download', filename);
-
             element.style.display = 'none';
             document.body.appendChild(element);
-
             element.click();
-
             document.body.removeChild(element);
-            
-            alert("Rozpoczęto pobieranie pliku: " + filename);
         }
 
-        // --- 4. Logika Modala z Kodem ---
+        // LOGIKA MODALA KODU
         function openCodeModal() {
             document.getElementById('codeModal').classList.remove('hidden');
             document.getElementById('codeModal').classList.add('flex');
             document.body.style.overflow = 'hidden';
         }
-
         function closeCodeModal() {
             document.getElementById('codeModal').classList.add('hidden');
             document.getElementById('codeModal').classList.remove('flex');
             document.body.style.overflow = 'auto';
         }
 
-        // Zamknij modale klawiszem ESC
         document.addEventListener('keydown', function(event) {
             if (event.key === "Escape") {
                 closeGameModal();
